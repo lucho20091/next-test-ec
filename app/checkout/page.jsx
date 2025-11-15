@@ -10,6 +10,8 @@ import { ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getDummyUser, getUserByEmail } from "@/lib/actions/user";
+import { sendOrderToTelegram } from "@/lib/actions/telegram";
+import { showToast } from "@/lib/utils/toast";
 const initialOptions = {
   "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "",
   currency: "USD",
@@ -71,17 +73,25 @@ export default function CheckoutPage() {
   };
 
   const onApprove = async (data, actions) => {
-    const paypalOrder = await actions.order.capture();
-    const dbOrder = await createOrderPaypal(paypalOrder, cartItems);
+    try {
+      const paypalOrder = await actions.order.capture();
+      const dbOrder = await createOrderPaypal(paypalOrder, cartItems);
 
-    if (dbOrder) {
-      router.push(`/orders/${dbOrder.id}`);
-      clearCart();
-    } else {
+      if (dbOrder) {
+        await sendOrderToTelegram(dbOrder);
+        router.push(`/orders/${dbOrder.id}`);
+        clearCart();
+      } else {
+        showToast("unable to place order");
+      }
+    } catch (e) {
+      showToast("unable to place order");
     }
   };
 
-  const onError = (err) => {};
+  const onError = (err) => {
+    showToast("unable to place order");
+  };
 
   const dummyPayment = async () => {
     try {
@@ -92,9 +102,16 @@ export default function CheckoutPage() {
         totalAmount,
         ip
       );
+      if (!dummyOrder) {
+        showToast("unable to place order");
+      }
+      await sendOrderToTelegram(dummyOrder);
+      showToast("Placed order successfully");
       router.push(`/orders/${dummyOrder.id}`);
       clearCart();
-    } catch (e) {}
+    } catch (e) {
+      showToast("unable to place order");
+    }
   };
 
   if (!cartItems.length)
