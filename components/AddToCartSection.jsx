@@ -31,6 +31,7 @@ export default function AddToCartSection({ product }) {
             size="icon"
             onClick={decreaseQty}
             disabled={quantity <= 1}
+            className="cursor-pointer"
           >
             <Minus className="h-4 w-4" />
           </Button>
@@ -40,6 +41,7 @@ export default function AddToCartSection({ product }) {
             size="icon"
             onClick={increaseQty}
             disabled={quantity >= product.stockCount}
+            className="cursor-pointer"
           >
             <Plus className="h-4 w-4" />
           </Button>
@@ -47,7 +49,7 @@ export default function AddToCartSection({ product }) {
       </div>
 
       {/* Add to Cart */}
-      <Button onClick={handleAdd} className="w-full" size="lg">
+      <Button onClick={handleAdd} className="w-full cursor-pointer" size="lg">
         Add to Cart
       </Button>
     </div>

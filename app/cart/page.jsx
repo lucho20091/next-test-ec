@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Trash2, Minus, Plus } from "lucide-react";
 import { getUserByEmail } from "@/lib/actions/user";
 import { useState, useEffect } from "react";
+import { showToast } from "@/lib/utils/toast";
 export default function CartPage() {
   const [user, setUser] = useState(null);
   const { cartItems, removeFromCart, updateQuantity, total, clearCart } =
@@ -58,7 +59,7 @@ export default function CartPage() {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-8 w-8"
+                      className="h-8 w-8 cursor-pointer"
                       onClick={() =>
                         updateQuantity(item.id, Math.max(1, item.quantity - 1))
                       }
@@ -78,7 +79,7 @@ export default function CartPage() {
                     <Button
                       variant="outline"
                       size="icon"
-                      className="h-8 w-8"
+                      className="h-8 w-8 cursor-pointer"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       disabled={item.quantity >= item.countInStock}
                     >
@@ -92,6 +93,7 @@ export default function CartPage() {
                     variant="ghost"
                     size="icon"
                     onClick={() => removeFromCart(item.id)}
+                    className="cursor-pointer"
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>

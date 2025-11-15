@@ -2,12 +2,11 @@
 import { SignIn } from "@stackframe/stack";
 import { stackClientApp } from "@/stack/client";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { showToast } from "@/lib/utils/toast";
 
 export default function Page() {
   const router = useRouter();
-  const [showCheckoutMessage, setShowCheckoutMessage] = useState(false);
 
   useEffect(() => {
     async function checkUser() {
@@ -15,13 +14,6 @@ export default function Page() {
       if (user) {
         router.push("/");
         return;
-      }
-      const hasTriedToCheckOut = localStorage.getItem("hasTriedToCheckOut");
-      if (hasTriedToCheckOut === "true") {
-        setShowCheckoutMessage(true);
-        showToast(
-          "Para completar la compra, por favor crea una cuenta primero"
-        );
       }
     }
 

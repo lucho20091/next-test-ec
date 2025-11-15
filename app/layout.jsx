@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
             <CartProvider>
               <Navbar />
               {children}
-              <Toaster />
+              <Toaster position="top-right" />
             </CartProvider>
           </StackTheme>
         </StackProvider>

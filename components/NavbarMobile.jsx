@@ -7,6 +7,7 @@ import SignOutButton from "@/components/SignOutButton";
 import { stackClientApp } from "@/stack/client";
 import { isAdmin } from "@/lib/actions/user";
 import { Button } from "./ui/button";
+
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -20,7 +21,7 @@ export default function NavbarMobile() {
 
         if (currentUser) {
           const admin = await isAdmin();
-          if (admin) setIsUserAdmin(true);
+          setIsUserAdmin(!!admin);
         }
       } catch (error) {}
     }
@@ -33,7 +34,9 @@ export default function NavbarMobile() {
       {/* Burger Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-gray-700 focus:outline-none cursor-pointer p-2"
+        className="text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition"
+        aria-label="Toggle menu"
+        aria-expanded={isOpen}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -61,65 +64,68 @@ export default function NavbarMobile() {
       </button>
 
       {/* Mobile menu */}
-      {isOpen && (
-        <div
-          className="
-          absolute top-16 left-0 w-full 
-          bg-white border-t shadow-lg 
-          flex flex-col gap-2 py-4 
-          z-50 animate-slideDown
-        "
-        >
-          {/* Menu links */}
-          <div className="flex flex-col px-6 gap-1 py-2">
+      <div
+        className={`
+          fixed top-16 left-0 w-full z-50
+          bg-white/80 backdrop-blur-lg shadow-lg border-t
+          transition-all duration-300 
+          ${
+            isOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 -translate-y-4 pointer-events-none"
+          }
+        `}
+      >
+        {/* Links */}
+        <div className="flex flex-col px-6 gap-2 py-4">
+          <Link
+            href="/"
+            className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Products
+          </Link>
+
+          <Link
+            href="/orders"
+            className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
+            onClick={() => setIsOpen(false)}
+          >
+            Orders
+          </Link>
+
+          {isUserAdmin && (
             <Link
-              href="/"
-              className="flex items-center py-2 text-gray-700 font-medium hover:text-blue-600"
+              href="/admin"
+              className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
               onClick={() => setIsOpen(false)}
             >
-              Products
+              Admin
             </Link>
-
-            <Link
-              href="/orders"
-              className="flex items-center py-2 text-gray-700 font-medium hover:text-blue-600"
-              onClick={() => setIsOpen(false)}
-            >
-              Orders
-            </Link>
-
-            {isUserAdmin && (
-              <Link
-                href="/admin"
-                className="flex items-center py-2 text-gray-700 font-medium hover:text-blue-600"
-                onClick={() => setIsOpen(false)}
-              >
-                Admin
-              </Link>
-            )}
-          </div>
-
-          {/* Auth section */}
-          <div className="px-6 py-3 border-t flex items-center justify-between">
-            <button onClick={() => setIsOpen(false)}>
-              <CartCountBadge />
-            </button>
-            {user ? (
-              <SignOutButton />
-            ) : (
-              <Button
-                asChild
-                size="sm"
-                variant="outline"
-                className="px-3 py-2  border-none hover:text-blue-600"
-                onClick={() => setIsOpen(false)}
-              >
-                <Link href="/sign-in">Sign In</Link>
-              </Button>
-            )}
-          </div>
+          )}
         </div>
-      )}
+
+        {/* Auth + cart */}
+        <div className="px-6 py-3 border-t flex items-center justify-between">
+          <button onClick={() => setIsOpen(false)}>
+            <CartCountBadge />
+          </button>
+
+          {user ? (
+            <SignOutButton />
+          ) : (
+            <Button
+              asChild
+              size="sm"
+              variant="outline"
+              className="px-3 py-2 border-none hover:text-blue-600"
+              onClick={() => setIsOpen(false)}
+            >
+              <Link href="/sign-in">Sign In</Link>
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -6,6 +6,8 @@ import { isAdmin } from "@/lib/actions/user";
 import CartCountBadge from "@/components/CartCountBadge";
 import NavbarMobile from "./NavbarMobile";
 import { Button } from "./ui/button";
+import NavLink from "@/components/NavLink";
+
 export default async function Navbar() {
   const user = await stackServerApp.getUser();
   const isUserAdmin = await isAdmin();
@@ -19,40 +21,21 @@ export default async function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
-          {isUserAdmin && (
-            <Link
-              href="/admin"
-              className="hover:underline inline-flex items-center"
-            >
-              Admin
-            </Link>
-          )}
-          <Link href="/" className="hover:underline inline-flex items-center">
-            Products
-          </Link>
+          {isUserAdmin && <NavLink href="/admin">Admin</NavLink>}
 
-          <Link
-            href="/orders"
-            className="hover:underline inline-flex items-center"
-          >
-            Orders
-          </Link>
+          <NavLink href="/">Products</NavLink>
+
+          <NavLink href="/orders">Orders</NavLink>
 
           <CartCountBadge />
+
           {user ? (
             <SignOutButton />
           ) : (
-            <Button
-              asChild
-              size="sm"
-              variant="outline"
-              className="px-3 py-2   hover:text-blue-600 border-none"
-            >
-              <Link href="/sign-in">Sign In</Link>
-            </Button>
+            <NavLink href="/sign-in">Sign In</NavLink>
           )}
         </nav>
-        {/* mobile navbar */}
+
         <NavbarMobile />
       </div>
     </header>
