@@ -131,12 +131,7 @@ export default function CheckoutPage() {
         </Link>
       </Button>
       <h1 className="mb-8">Checkout</h1>
-      {isDummyUser && (
-        <div className="w-full bg-black text-white p-4 rounded-md mb-8 text-center">
-          To customize your shipping address and test PayPal Sandbox, please
-          sign in.
-        </div>
-      )}
+
       {!isDummyUser && user && (
         <div className="w-full bg-black text-white p-4 rounded-md mb-8 text-center">
           This is a demo project, please do not enter your personal payment
