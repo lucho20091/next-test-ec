@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Category {
+  CLOTHES
+  TECHNOLOGY
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  shippingAddress Json?
+  isActive Boolean @default(true)
+  isAdmin   Boolean  @default(false)
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id              String          @id @default(uuid())
+  user            User            @relation(fields: [userId], references: [id])
+  userId          String
+  isCanceled Boolean @default(false)
+  orderItems      Json            // store [{name, quantity, image, price}]
+  shippingAddress Json            // store {fullName, address, city, postalCode, country}
+  paymentMethod   String
+  paymentResult   Json?           // store {id, status, email}
+
+  itemsPrice      Float
+  shippingPrice   Float           @default(0)
+  taxPrice        Float           @default(0)
+  totalPrice      Float
+
+  isPaid          Boolean         @default(false)
+  isDelivered     Boolean         @default(false)
+  paidAt          DateTime?
+  deliveredAt     DateTime?
+  shippingStatus  Json?           //{ carrier, trackingId, currentStatus }
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model Product {
+  id           String     @id @default(uuid())
+  name         String
+  slug         String     @unique
+  category     Category
+  image       String?   // e.g. ["image.jpg","image2.jpg"]
+  price        Float
+  brand String?
+  reviews      Json?      // optional array or object
+  countInStock Int
+  description  String
+  isFeatured   Boolean    @default(false)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
