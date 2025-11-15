@@ -171,16 +171,20 @@ export default function CheckoutPage() {
               {cartItems.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-center justify-between text-sm"
+                  className="flex items-center justify-between text-sm gap-4"
                 >
-                  <img
-                    src={item.image}
-                    alt={item.name}
-                    className="w-16 h-16 object-cover rounded-md border"
-                  />
-                  <span className="text-gray-600">
-                    {item.name} × {item.quantity}
-                  </span>
+                  <div className="w-16 h-16 relative flex-shrink-0 overflow-hidden rounded">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="object-coverr"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-gray-600">
+                      {item.name} × {item.quantity}
+                    </span>
+                  </div>
                   <span>${(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}

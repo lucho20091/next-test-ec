@@ -53,7 +53,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/about"
+                  href="/about-us"
                   className="text-gray-400 hover:text-white text-sm transition"
                 >
                   About Us
@@ -61,7 +61,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="#"
                   className="text-gray-400 hover:text-white text-sm transition"
                 >
                   Contact
@@ -69,7 +69,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/careers"
+                  href="#"
                   className="text-gray-400 hover:text-white text-sm transition"
                 >
                   Careers
@@ -117,13 +117,13 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-400">
           <p>&copy; 2025 TechStore. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-white transition">
+            <Link href="#" className="hover:text-white transition">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white transition">
+            <Link href="#" className="hover:text-white transition">
               Terms of Service
             </Link>
-            <Link href="/cookies" className="hover:text-white transition">
+            <Link href="#" className="hover:text-white transition">
               Cookie Policy
             </Link>
           </div>
