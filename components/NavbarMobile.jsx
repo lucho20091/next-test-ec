@@ -87,6 +87,14 @@ export default function NavbarMobile() {
           </Link>
 
           <Link
+            href="/about-us"
+            className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
+            onClick={() => setIsOpen(false)}
+          >
+            About Us
+          </Link>
+
+          <Link
             href="/orders"
             className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
             onClick={() => setIsOpen(false)}

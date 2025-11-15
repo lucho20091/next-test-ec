@@ -25,6 +25,8 @@ export default async function Navbar() {
 
           <NavLink href="/">Products</NavLink>
 
+          <NavLink href="/about-us">About Us</NavLink>
+
           <NavLink href="/orders">Orders</NavLink>
 
           <CartCountBadge />

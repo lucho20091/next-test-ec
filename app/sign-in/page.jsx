@@ -3,7 +3,6 @@ import { SignIn } from "@stackframe/stack";
 import { stackClientApp } from "@/stack/client";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { showToast } from "@/lib/utils/toast";
 
 export default function Page() {
   const router = useRouter();
@@ -21,10 +20,8 @@ export default function Page() {
   }, [router]);
 
   return (
-    <div className="min-h-[calc(100svh-100px)] flex items-center justify-center">
-      <div>
-        <SignIn />
-      </div>
+    <div className="grid place-items-center mt-8">
+      <SignIn />
     </div>
   );
 }

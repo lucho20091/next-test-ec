@@ -5,7 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext";
 import { Toaster } from "react-hot-toast";
-
+import Footer from "@/components/Footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -25,13 +25,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-svh flex flex-col `}
       >
         <StackProvider app={stackClientApp}>
           <StackTheme>
             <CartProvider>
               <Navbar />
-              {children}
+              <main className="flex-1 min-h-0">{children}</main>
+              <Footer />
               <Toaster position="top-right" />
             </CartProvider>
           </StackTheme>
