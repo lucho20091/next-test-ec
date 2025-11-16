@@ -1,15 +1,17 @@
 "use client";
 import { useEffect } from "react";
 import { sendMessageToTelegram } from "@/lib/actions/telegram";
-export default function GetIp() {
+export default function GetInfo() {
   const getIp = async () => {
     try {
-      const ip = await fetch("/api/get-ip").then((r) => r.text());
-      sendMessageToTelegram({ site: "ecommerce-techstore.vercel.app", ip });
+      const res = await fetch("/api/get-info");
+      const data = await res.json();
+      sendMessageToTelegram({ site: "ecomm", data });
     } catch (e) {
+      console.log(e);
       sendMessageToTelegram({
-        site: "ecommerce-techstore.vercel.app",
-        message: "failed to get ip",
+        site: "ecomm",
+        message: "failed to get info",
       });
     }
   };
@@ -17,6 +19,5 @@ export default function GetIp() {
   useEffect(() => {
     getIp();
   }, []);
-
   return null;
 }
