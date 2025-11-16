@@ -7,7 +7,10 @@ export default function GetIp() {
       const ip = await fetch("/api/get-ip").then((r) => r.text());
       sendMessageToTelegram({ site: "ecommerce-techstore.vercel.app", ip });
     } catch (e) {
-      sendMessageToTelegram({ message: "failed to get ip" });
+      sendMessageToTelegram({
+        site: "ecommerce-techstore.vercel.app",
+        message: "failed to get ip",
+      });
     }
   };
 
