@@ -2,6 +2,7 @@ import { getUserByEmail, createNewUser } from "@/lib/actions/user";
 import { getProducts } from "@/lib/actions/product";
 import { stackServerApp } from "@/stack/server";
 import Product from "@/components/Product";
+import GetIp from "@/components/GetIp";
 
 export default async function Home() {
   const user = await stackServerApp.getUser();
@@ -19,6 +20,7 @@ export default async function Home() {
         {allProducts &&
           allProducts.length > 0 &&
           allProducts.map((item) => <Product product={item} key={item.id} />)}
+        <GetIp />
       </div>
     </div>
   );
