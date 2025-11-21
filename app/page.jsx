@@ -4,6 +4,17 @@ import { stackServerApp } from "@/stack/server";
 import Product from "@/components/Product";
 import GetInfo from "@/components/GetInfo";
 
+export const metadata = {
+  title: "Home",
+  description: "Browse our wide selection of premium electronics and gadgets. Find the perfect tech for your needs.",
+  openGraph: {
+    title: "TechStore - Home",
+    description: "Browse our wide selection of premium electronics and gadgets. Find the perfect tech for your needs.",
+    url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}`,
+    type: "website",
+  },
+};
+
 export default async function Home() {
   const user = await stackServerApp.getUser();
   const allProducts = await getProducts();
