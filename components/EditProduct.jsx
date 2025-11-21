@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { editProduct } from "@/lib/actions/product";
+import { Input } from "@/components/ui/input"; // Import Input
+import { Label } from "@/components/ui/label"; // Import Label
+import { Button } from "@/components/ui/button"; // Import Button
 
 export default function EditProduct({ id, product }) {
   const [productData, setProductData] = useState({
@@ -59,6 +62,7 @@ export default function EditProduct({ id, product }) {
       const data = await uploadRes.json();
       return data.secure_url;
     } catch (err) {
+      console.error("Error uploading image:", err);
       return null;
     } finally {
       setUploading(false);
@@ -82,6 +86,9 @@ export default function EditProduct({ id, product }) {
     };
 
     const updatedProduct = await editProduct(id, formatData);
+    if (updatedProduct) {
+      // showToast("Product updated successfully!", "success"); // Assuming showToast exists
+    }
   }
 
   return (
@@ -91,94 +98,108 @@ export default function EditProduct({ id, product }) {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={productData.name}
-          onChange={handleChange}
-          required
-          className="border p-2 w-full rounded"
-        />
+        <div>
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
+            type="text"
+            name="name"
+            placeholder="Product Name"
+            value={productData.name}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <input
-          type="text"
-          name="slug"
-          placeholder="Slug"
-          value={productData.slug}
-          onChange={handleChange}
-          required
-          className="border p-2 w-full rounded"
-        />
+        <div>
+          <Label htmlFor="slug">Slug</Label>
+          <Input
+            id="slug"
+            type="text"
+            name="slug"
+            placeholder="product-slug"
+            value={productData.slug}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-        <input
-          type="text"
-          name="category"
-          placeholder="Category"
-          value={productData.category}
-          onChange={handleChange}
-          required
-          className="border p-2 w-full rounded"
-        />
+        <div>
+          <Label htmlFor="category">Category</Label>
+          <Input
+            id="category"
+            type="text"
+            name="category"
+            placeholder="Category"
+            value={productData.category}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
         {/* Image Upload */}
         <div>
-          <label className="block text-sm font-medium mb-1 text-gray-600">
-            Product Image
-          </label>
+          <Label htmlFor="product-image">Product Image</Label>
 
           <div className="flex items-center gap-4">
             <img
               src={selectedPreview || productData.image}
-              alt="Preview"
+              alt="Image preview"
               className="w-24 h-24 object-cover rounded border"
             />
-            <input
+            <Input
+              id="product-image"
               type="file"
               accept="image/*"
               onChange={handleFileUpload}
-              className="border p-2 rounded bg-gray-50"
+              className="file:text-foreground file:bg-gray-50"
             />
           </div>
         </div>
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={productData.price}
-          onChange={handleChange}
-          className="border p-2 w-full rounded"
-        />
+        <div>
+          <Label htmlFor="price">Price</Label>
+          <Input
+            id="price"
+            type="number"
+            name="price"
+            placeholder="Price"
+            value={productData.price}
+            onChange={handleChange}
+          />
+        </div>
 
-        <input
-          type="number"
-          name="countInStock"
-          placeholder="Count in Stock"
-          value={productData.countInStock}
-          onChange={handleChange}
-          className="border p-2 w-full rounded"
-        />
+        <div>
+          <Label htmlFor="countInStock">Count in Stock</Label>
+          <Input
+            id="countInStock"
+            type="number"
+            name="countInStock"
+            placeholder="Count in Stock"
+            value={productData.countInStock}
+            onChange={handleChange}
+          />
+        </div>
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={productData.description}
-          onChange={handleChange}
-          className="border p-2 w-full rounded h-24"
-        />
+        <div>
+          <Label htmlFor="description">Description</Label>
+          <textarea
+            id="description"
+            name="description"
+            placeholder="Description"
+            value={productData.description}
+            onChange={handleChange}
+            className="border p-2 w-full rounded h-24" // Keep textarea for multi-line input
+          />
+        </div>
 
-        <button
+        <Button
           type="submit"
           disabled={uploading}
-          className={`w-full text-white px-4 py-2 rounded transition ${
-            uploading
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
-          }`}
+          className="w-full"
         >
           {uploading ? "Uploading..." : "Save Changes"}
-        </button>
+        </Button>
       </form>
     </div>
   );

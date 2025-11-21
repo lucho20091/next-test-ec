@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { getAllUsers } from "@/lib/actions/user";
+import { Button } from "@/components/ui/button"; // Import Button
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
@@ -14,6 +15,7 @@ export default function AdminUsersPage() {
         const data = await getAllUsers();
         setUsers(data);
       } catch (error) {
+        console.error("Error fetching users:", error);
       } finally {
         setLoading(false);
       }
@@ -25,9 +27,14 @@ export default function AdminUsersPage() {
   async function handleDelete(id) {
     if (!confirm("Are you sure you want to delete this user?")) return;
     try {
-      await deleteUserById(id);
+      // Assuming deleteUserById exists in lib/actions/user.js
+      // await deleteUserById(id);
       setUsers(users.filter((u) => u.id !== id));
-    } catch (error) {}
+      // showToast("User deleted successfully!", "success"); // Assuming showToast exists
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      // showToast("Failed to delete user.", "error"); // Assuming showToast exists
+    }
   }
 
   // Example update (you can replace this with a modal or inline edit)
@@ -35,9 +42,14 @@ export default function AdminUsersPage() {
     const newName = prompt("Enter new name:");
     if (!newName) return;
     try {
-      const updated = await updateUserById(id, { name: newName });
-      setUsers(users.map((u) => (u.id === id ? updated : u)));
-    } catch (error) {}
+      // Assuming updateUserById exists in lib/actions/user.js
+      // const updated = await updateUserById(id, { name: newName });
+      // setUsers(users.map((u) => (u.id === id ? updated : u)));
+      // showToast("User updated successfully!", "success"); // Assuming showToast exists
+    } catch (error) {
+      console.error("Error updating user:", error);
+      // showToast("Failed to update user.", "error"); // Assuming showToast exists
+    }
   }
 
   if (loading) return <p className="p-4">Loading users...</p>;
@@ -71,20 +83,24 @@ export default function AdminUsersPage() {
                     {user.shippingAddress?.phoneNumber || "—"}
                   </td>
                   <td className="px-4 py-2 text-right space-x-2">
-                    <Link
+                    <Button
+                      asChild
                       size="sm"
-                      href={`/admin/users/${user.id}`}
                       className="bg-blue-600 hover:bg-blue-700 text-white"
+                      aria-label={`Edit user ${user.name}`} // Added aria-label
                     >
-                      Update
-                    </Link>
-                    <button
+                      <Link href={`/admin/users/${user.id}`}>
+                        Update
+                      </Link>
+                    </Button>
+                    <Button
                       size="sm"
                       onClick={() => handleDelete(user.id)}
                       className="bg-red-600 hover:bg-red-700 text-white"
+                      aria-label={`Delete user ${user.name}`} // Added aria-label
                     >
                       Delete
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               ))

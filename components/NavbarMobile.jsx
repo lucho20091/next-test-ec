@@ -7,6 +7,7 @@ import SignOutButton from "@/components/SignOutButton";
 import { stackClientApp } from "@/stack/client";
 import { isAdmin } from "@/lib/actions/user";
 import { Button } from "./ui/button";
+import NavLink from "./NavLink"; // Import NavLink for consistent styling and active state
 
 export default function NavbarMobile() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,9 @@ export default function NavbarMobile() {
           const admin = await isAdmin();
           setIsUserAdmin(!!admin);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error fetching user or admin status:", error);
+      }
     }
 
     fetchUserAndRole();
@@ -37,6 +40,7 @@ export default function NavbarMobile() {
         className="text-gray-700 p-2 rounded-lg hover:bg-gray-100 transition"
         aria-label="Toggle menu"
         aria-expanded={isOpen}
+        aria-controls="mobile-menu" // Added aria-controls
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +69,7 @@ export default function NavbarMobile() {
 
       {/* Mobile menu */}
       <div
+        id="mobile-menu" // Added id
         className={`
           fixed top-16 left-0 w-full z-50
           bg-white/80 backdrop-blur-lg shadow-lg border-t
@@ -77,45 +82,29 @@ export default function NavbarMobile() {
         `}
       >
         {/* Links */}
-        <div className="flex flex-col px-6 gap-2 py-4">
-          <Link
-            href="/"
-            className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
-            onClick={() => setIsOpen(false)}
-          >
+        <nav className="flex flex-col px-6 gap-2 py-4" aria-label="Mobile navigation">
+          <NavLink href="/" onClick={() => setIsOpen(false)}>
             Products
-          </Link>
+          </NavLink>
 
-          <Link
-            href="/about-us"
-            className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
-            onClick={() => setIsOpen(false)}
-          >
+          <NavLink href="/about-us" onClick={() => setIsOpen(false)}>
             About Us
-          </Link>
+          </NavLink>
 
-          <Link
-            href="/orders"
-            className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
-            onClick={() => setIsOpen(false)}
-          >
+          <NavLink href="/orders" onClick={() => setIsOpen(false)}>
             Orders
-          </Link>
+          </NavLink>
 
           {isUserAdmin && (
-            <Link
-              href="/admin"
-              className="py-2 text-gray-700 font-medium hover:text-blue-600 transition"
-              onClick={() => setIsOpen(false)}
-            >
+            <NavLink href="/admin" onClick={() => setIsOpen(false)}>
               Admin
-            </Link>
+            </NavLink>
           )}
-        </div>
+        </nav>
 
         {/* Auth + cart */}
         <div className="px-6 py-3 border-t flex items-center justify-between">
-          <button onClick={() => setIsOpen(false)}>
+          <button onClick={() => setIsOpen(false)} aria-label="View shopping cart">
             <CartCountBadge />
           </button>
 

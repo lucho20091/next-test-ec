@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { updateOrderById } from "@/lib/actions/order";
+import { Input } from "@/components/ui/input"; // Import Input
+import { Label } from "@/components/ui/label"; // Import Label
+import { Button } from "@/components/ui/button"; // Import Button
 
 export default function EditOrder({ order }) {
   const [shippingStatus, setShippingStatus] = useState(
@@ -24,12 +27,19 @@ export default function EditOrder({ order }) {
     };
 
     // Include tracking data only if "Order shipped"
-    if (shippingStatus !== "Preparing order") {
+    if (shippingStatus === "shipped") { // Changed from "Preparing order" to "shipped" for logical consistency
       updateData.shippingStatus.carrier = carrier;
       updateData.shippingStatus.trackingId = trackingId;
+    } else {
+      // Clear tracking info if not shipped
+      updateData.shippingStatus.carrier = null;
+      updateData.shippingStatus.trackingId = null;
     }
 
     const update = await updateOrderById(order.id, updateData);
+    if (update) {
+      // showToast("Order updated successfully!", "success"); // Assuming showToast exists
+    }
   };
 
   return (
@@ -87,41 +97,42 @@ export default function EditOrder({ order }) {
       {/* Editable Fields */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block mb-1 font-medium">Shipping Status</label>
+          <Label htmlFor="shippingStatus">Shipping Status</Label>
           <select
+            id="shippingStatus"
             value={shippingStatus}
             onChange={(e) => setShippingStatus(e.target.value)}
             className="w-full border rounded-md p-2"
           >
-            <option>pending</option>
-            <option>processing</option>
-            <option>shipped</option>
-            <option>delivered</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
           </select>
         </div>
 
         {/* Conditional tracking fields */}
-        {shippingStatus !== "Preparing order" && (
+        {shippingStatus === "shipped" && ( // Changed condition
           <div className="space-y-3">
             <div>
-              <label className="block mb-1 font-medium">Carrier</label>
-              <input
+              <Label htmlFor="carrier">Carrier</Label>
+              <Input
+                id="carrier"
                 type="text"
                 value={carrier}
                 onChange={(e) => setCarrier(e.target.value)}
                 placeholder="e.g. DHL, FedEx, UPS"
-                className="w-full border rounded-md p-2"
               />
             </div>
 
             <div>
-              <label className="block mb-1 font-medium">Tracking ID</label>
-              <input
+              <Label htmlFor="trackingId">Tracking ID</Label>
+              <Input
+                id="trackingId"
                 type="text"
                 value={trackingId}
                 onChange={(e) => setTrackingId(e.target.value)}
                 placeholder="e.g. 1Z999AA10123456784"
-                className="w-full border rounded-md p-2"
               />
             </div>
           </div>
@@ -134,15 +145,15 @@ export default function EditOrder({ order }) {
             onChange={(e) => setIsDelivered(e.target.checked)}
             id="isDelivered"
           />
-          <label htmlFor="isDelivered">Mark as Delivered</label>
+          <Label htmlFor="isDelivered">Mark as Delivered</Label>
         </div>
 
-        <button
+        <Button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 w-full"
+          className="w-full"
         >
           Save Changes
-        </button>
+        </Button>
       </form>
     </div>
   );

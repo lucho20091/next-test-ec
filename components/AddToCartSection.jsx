@@ -21,7 +21,7 @@ export default function AddToCartSection({ product }) {
 
   return (
     <div className="mb-4">
-      <label className="block mb-2">Quantity</label>
+      <label htmlFor="product-quantity" className="block mb-2">Quantity</label>
 
       <div className="flex items-center justify-between mb-4">
         {/* Quantity Controls */}
@@ -32,16 +32,20 @@ export default function AddToCartSection({ product }) {
             onClick={decreaseQty}
             disabled={quantity <= 1}
             className="cursor-pointer"
+            aria-label="Decrease quantity" // Added aria-label
           >
             <Minus className="h-4 w-4" />
           </Button>
-          <span className="w-12 text-center">{quantity}</span>
+          <span id="product-quantity" className="w-12 text-center" aria-live="polite">
+            {quantity}
+          </span>
           <Button
             variant="outline"
             size="icon"
             onClick={increaseQty}
-            disabled={quantity >= product.stockCount}
+            disabled={quantity >= product.countInStock}
             className="cursor-pointer"
+            aria-label="Increase quantity" // Added aria-label
           >
             <Plus className="h-4 w-4" />
           </Button>

@@ -64,6 +64,7 @@ export default function CartPage() {
                         updateQuantity(item.id, Math.max(1, item.quantity - 1))
                       }
                       disabled={item.quantity <= 1}
+                      aria-label={`Decrease quantity of ${item.name}`} // Added aria-label
                     >
                       <Minus className="h-3 w-3" />
                     </Button>
@@ -72,6 +73,8 @@ export default function CartPage() {
         w-8 h-8 flex items-center justify-center
         text-gray-800 font-medium text-sm
       "
+                      aria-live="polite" // Added aria-live
+                      aria-atomic="true" // Added aria-atomic
                     >
                       {item.quantity}
                     </span>
@@ -82,6 +85,7 @@ export default function CartPage() {
                       className="h-8 w-8 cursor-pointer"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       disabled={item.quantity >= item.countInStock}
+                      aria-label={`Increase quantity of ${item.name}`} // Added aria-label
                     >
                       <Plus className="h-3 w-3" />
                     </Button>
@@ -94,6 +98,7 @@ export default function CartPage() {
                     size="icon"
                     onClick={() => removeFromCart(item.id)}
                     className="cursor-pointer"
+                    aria-label={`Remove ${item.name} from cart`} // Added aria-label
                   >
                     <Trash2 className="h-4 w-4 text-red-600" />
                   </Button>
@@ -105,6 +110,7 @@ export default function CartPage() {
             variant="outline"
             onClick={clearCart}
             className="w-full cursor-pointer"
+            aria-label="Clear all items from cart" // Added aria-label
           >
             Clear Cart
           </Button>

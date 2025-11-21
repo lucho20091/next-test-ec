@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAdminOrders } from "@/lib/actions/order";
+import { Button } from "@/components/ui/button"; // Import Button
 
 export default async function Page() {
   const orders = await getAdminOrders();
@@ -61,16 +62,28 @@ export default async function Page() {
                   {new Date(order.createdAt).toLocaleDateString()}
                 </td>
                 <td className="p-2 border flex gap-2">
-                  <Link
-                    href={`/admin/orders/${order.id}`}
-                    className="text-blue-600 hover:underline"
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    aria-label={`View details for order ${order.id}`} // Added aria-label
                   >
-                    View
-                  </Link>
+                    <Link
+                      href={`/admin/orders/${order.id}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      View
+                    </Link>
+                  </Button>
                   {!order.isDelivered && (
-                    <button className="text-green-600 hover:underline">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-green-600 hover:underline"
+                      aria-label={`Mark order ${order.id} as Delivered`} // Added aria-label
+                    >
                       Mark as Delivered
-                    </button>
+                    </Button>
                   )}
                 </td>
               </tr>
