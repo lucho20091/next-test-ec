@@ -22,8 +22,8 @@ export default function Product({ product }) {
           alt={product.name}
           width={220}
           height={220}
-          className={`w-full h-full object-cover transition-transform duration-300 ${
-            imageLoaded ? "hover:scale-105" : "hidden"
+          className={`w-full h-full object-cover transition-opacity duration-300 ${
+            imageLoaded ? "opacity-100" : "opacity-0"
           }`}
           onLoad={() => setImageLoaded(true)}
         />
