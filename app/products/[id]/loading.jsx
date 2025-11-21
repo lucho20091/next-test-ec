@@ -2,6 +2,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 
 export default function Loading() {
+  console.log("Rendering app/products/[id]/loading.jsx"); // Added console log
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <Skeleton className="h-9 w-40 mb-6" /> {/* Back button skeleton */}
