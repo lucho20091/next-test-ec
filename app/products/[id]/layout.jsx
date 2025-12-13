@@ -11,16 +11,21 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: `${product.name} | TechStore`,
         description: product.description,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/products/${product.id}`,
+        url: `${
+          process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+        }/products/${product.id}`,
         images: [
           {
-            url: product.image || `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/default.jpg`,
+            url:
+              product.image ||
+              `${
+                process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+              }/default.jpg`,
             width: 800,
             height: 600,
             alt: product.name,
           },
         ],
-        type: "product",
       },
     };
   } catch {
@@ -30,8 +35,10 @@ export async function generateMetadata({ params }) {
       openGraph: {
         title: "Product | TechStore",
         description: "View Product details on TechStore",
-        url: `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}/products/${id}`,
-        type: "product",
+        url: `${
+          process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+        }/products/${id}`,
+        type: "website",
       },
     };
   }
